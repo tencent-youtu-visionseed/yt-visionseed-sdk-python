@@ -55,6 +55,7 @@ line, = ax.plot([], [], 'r-') # Returns a tuple of line objects, thus the comma
 class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
     def __init__(self):
         super(hello_visionseed, self).__init__()
+        self.skipSync = False
         self.frame = None
         self.msg = None
         self.sprite = None
@@ -67,6 +68,7 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
             mouth = cocos.sprite.Sprite('mouth%d.png' % i)
             mouth.position = (window_width/2, window_height/2)
             self.add(mouth, z=200)
+            mouth.opacity = 0
             self.mouth.append(mouth)
 
         self.setDebugDrawing(1)
@@ -180,15 +182,17 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
             self.recvFrame()
         if abs(self.frame['frameId'] - self.msg['frameId']) > 3600:
             print('Your VisionSeed may running old firmware!')
-        while self.frame['frameId'] > self.msg['frameId']:
-            # print('seq =', self.frame['frameId'], self.msg['frameId'])
-            self.recvMsg()
-        while self.frame['frameId'] < self.msg['frameId']:
-            # print('seq =', self.frame['frameId'], self.msg['frameId'])
-            self.recvFrame()
-        if self.frame['frameId'] != self.msg['frameId']:
-            print('miss =', self.frame['frameId'], self.msg['frameId'])
-            return
+            self.skipSync = True
+        if not self.skipSync:
+            while self.frame['frameId'] > self.msg['frameId']:
+                # print('seq =', self.frame['frameId'], self.msg['frameId'])
+                self.recvMsg()
+            while self.frame['frameId'] < self.msg['frameId']:
+                # print('seq =', self.frame['frameId'], self.msg['frameId'])
+                self.recvFrame()
+            if self.frame['frameId'] != self.msg['frameId']:
+                print('miss =', self.frame['frameId'], self.msg['frameId'])
+                return
 
         # print(''.join('{:02x} '.format(x) for x in buf))
         msg = self.msg['msg']
