@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import visionseed as vs
 import serial
 
@@ -11,6 +12,7 @@ import math
 
 import pyglet
 from pyglet.gl import *
+
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -47,8 +49,8 @@ x = []
 data = []
 plt.ion()
 fig, ax = plt.subplots()
-ax.set(xlabel='frame', ylabel='degree',
-       title='Pose')
+ax.set(xlabel='frame', ylabel='',
+       title='Mouth openness')
 ax.grid()
 line, = ax.plot([], [], 'r-') # Returns a tuple of line objects, thus the comma
 
@@ -91,6 +93,8 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
         if (len(drawRects) == 0):
             return
         rect = drawRects[0]
+        if rect.y < 0 or rect.x < 0:
+            return
         frame = frame[rect.y:rect.y+rect.h, rect.x:rect.x+rect.w]
         c0,c1,c2 = cv2.split(frame)
         alpha = np.zeros((frame.shape[0], frame.shape[1],1), np.uint8)
@@ -239,8 +243,7 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
                     data.pop(0)
                 else:
                     x.append(len(data))
-                # data.append(self.mouth.rotation)
-                data.append(scale)
+                data.append(dia_y.length()/dia.length())
                 # print(data)
 
                 line.set_xdata(x)
