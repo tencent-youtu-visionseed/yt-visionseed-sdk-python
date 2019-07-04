@@ -163,6 +163,9 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
     def recvFrame(self):
         ret, frame = cap.read()
         if ret == True:
+            # On Windows, cv2 give us a 1-D array
+            if frame.shape[0] == 1:
+                frame = np.reshape(frame, (-1, frame_width))
             seq = 0
             seq |= frame[0][0]
             seq <<= 8
