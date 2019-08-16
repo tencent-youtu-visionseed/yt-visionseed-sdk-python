@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='YtMsg.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x0bYtMsg.proto\x1a\x1a\x43\x61meraExposureParams.proto\x1a\x13\x46lasherParams.proto\x1a\x19\x46\x61\x63\x65\x44\x65tectionResult.proto\x1a\x18SystemStatusResult.proto\x1a\x14\x46ileListResult.proto\x1a\x0e\x46ilePart.proto\x1a!RegisterFaceIdWithPicParams.proto\"\xba\x01\n\x08YtResult\x12\x0f\n\x07\x66rameId\x18\x01 \x01(\x04\x12\x18\n\x10\x66rameTimestampUs\x18\x02 \x01(\x04\x12\x33\n\x13\x66\x61\x63\x65\x44\x65tectionResult\x18\x03 \x01(\x0b\x32\x14.FaceDetectionResultH\x00\x12\x31\n\x12systemStatusResult\x18\x04 \x01(\x0b\x32\x13.SystemStatusResultH\x00\x12\x13\n\tmsgOutput\x18\x05 \x01(\tH\x00\x42\x06\n\x04\x64\x61ta\"\x9f\x05\n\x05YtRpc\x12\x1d\n\x04\x66unc\x18\x01 \x02(\x0e\x32\x0f.YtRpc.Function\x12\x12\n\nsequenceId\x18\x02 \x01(\x05\x12\x13\n\tstrParams\x18\x03 \x01(\tH\x00\x12\x13\n\tintParams\x18\x04 \x01(\x05H\x00\x12\x35\n\x14\x63\x61meraExposureParams\x18\n \x01(\x0b\x32\x15.CameraExposureParamsH\x00\x12\'\n\rflasherParams\x18\x0b \x01(\x0b\x32\x0e.FlasherParamsH\x00\x12\x1d\n\x08\x66ilePart\x18\x15 \x01(\x0b\x32\t.FilePartH\x00\x12\x43\n\x1bregisterFaceIdWithPicParams\x18\x35 \x01(\x0b\x32\x1c.RegisterFaceIdWithPicParamsH\x00\"\xea\x02\n\x08\x46unction\x12\x0c\n\x08setModel\x10\x00\x12\x11\n\rgetDeviceInfo\x10\x01\x12\x13\n\x0fupgradeFirmware\x10\x02\x12\x0f\n\x0bsetExposure\x10\n\x12\x0e\n\nsetFlasher\x10\x0b\x12\x11\n\rsetMainCamera\x10\x0c\x12\x15\n\x11setCameraRotation\x10\r\x12\x0c\n\x08listFile\x10\x14\x12\x0e\n\nuploadFile\x10\x15\x12\x0e\n\ndeleteFile\x10\x16\x12\x13\n\x0f\x66ormatPartition\x10\x17\x12\x12\n\x0etakeRawPicture\x10(\x12\x13\n\x0fsetDebugDrawing\x10)\x12\x13\n\x0fgetFaceLibsInfo\x10\x33\x12\x11\n\rclearFaceLibs\x10\x34\x12\x19\n\x15registerFaceIdWithPic\x10\x35\x12\x1c\n\x18registerFaceIdFromCamera\x10\x36\x12\x10\n\x0c\x64\x65leteFaceId\x10\x37\x42\x08\n\x06params\"\xc9\x03\n\rYtRpcResponse\x12\x12\n\nsequenceId\x18\x01 \x01(\x05\x12\'\n\x04\x63ode\x18\x02 \x02(\x0e\x32\x19.YtRpcResponse.ReturnCode\x12\x11\n\x07strData\x18\x03 \x01(\tH\x00\x12\x11\n\x07intData\x18\x04 \x01(\x05H\x00\x12)\n\x0e\x66ileListResult\x18\x14 \x01(\x0b\x32\x0f.FileListResultH\x00\x12\x1d\n\x08\x66ilePart\x18( \x01(\x0b\x32\t.FilePartH\x00\"\x82\x02\n\nReturnCode\x12\x08\n\x04SUCC\x10\x00\x12\x0c\n\x08\x43ONTINUE\x10\x01\x12\x0f\n\x0b\x45RROR_OTHER\x10\x02\x12\r\n\tERROR_CRC\x10\x03\x12\x16\n\x12\x45RROR_INVALID_PATH\x10\x14\x12*\n&ERROR_REGISTER_FACEID_NO_FACE_DETECTED\x10\x32\x12(\n$ERROR_REGISTER_FACEID_TOO_MANY_FACES\x10\x33\x12+\n\'ERROR_REGISTER_FACEID_FILE_NOT_READABLE\x10\x34\x12!\n\x1d\x45RROR_DELETE_FACEID_NOT_EXIST\x10\x37\x42\x06\n\x04\x64\x61ta\"i\n\x05YtMsg\x12\x15\n\x03rpc\x18\x01 \x01(\x0b\x32\x06.YtRpcH\x00\x12\"\n\x08response\x18\x02 \x01(\x0b\x32\x0e.YtRpcResponseH\x00\x12\x1b\n\x06result\x18\x03 \x01(\x0b\x32\t.YtResultH\x00\x42\x08\n\x06values')
+  serialized_pb=_b('\n\x0bYtMsg.proto\x1a\x1a\x43\x61meraExposureParams.proto\x1a\x13\x46lasherParams.proto\x1a\x19\x46\x61\x63\x65\x44\x65tectionResult.proto\x1a\x18SystemStatusResult.proto\x1a\x14\x46ileListResult.proto\x1a\x0e\x46ilePart.proto\x1a!RegisterFaceIdWithPicParams.proto\"\xba\x01\n\x08YtResult\x12\x0f\n\x07\x66rameId\x18\x01 \x01(\x04\x12\x18\n\x10\x66rameTimestampUs\x18\x02 \x01(\x04\x12\x33\n\x13\x66\x61\x63\x65\x44\x65tectionResult\x18\x03 \x01(\x0b\x32\x14.FaceDetectionResultH\x00\x12\x31\n\x12systemStatusResult\x18\x04 \x01(\x0b\x32\x13.SystemStatusResultH\x00\x12\x13\n\tmsgOutput\x18\x05 \x01(\tH\x00\x42\x06\n\x04\x64\x61ta\"\x87\x07\n\x05YtRpc\x12\x1d\n\x04\x66unc\x18\x01 \x02(\x0e\x32\x0f.YtRpc.Function\x12\x12\n\nsequenceId\x18\x02 \x01(\x05\x12\x13\n\tstrParams\x18\x03 \x01(\tH\x00\x12\x13\n\tintParams\x18\x04 \x01(\x05H\x00\x12\x35\n\x14\x63\x61meraExposureParams\x18\n \x01(\x0b\x32\x15.CameraExposureParamsH\x00\x12\'\n\rflasherParams\x18\x0b \x01(\x0b\x32\x0e.FlasherParamsH\x00\x12\x1d\n\x08\x66ilePart\x18\x15 \x01(\x0b\x32\t.FilePartH\x00\x12\x43\n\x1bregisterFaceIdWithPicParams\x18\x35 \x01(\x0b\x32\x1c.RegisterFaceIdWithPicParamsH\x00\x12I\n\x1eregisterFaceIdFromCameraParams\x18\x36 \x01(\x0b\x32\x1f.RegisterFaceIdFromCameraParamsH\x00\x12+\n\x0fsetFaceIdParams\x18\x37 \x01(\x0b\x32\x10.SetFaceIdParamsH\x00\x12-\n\x10listFaceIdParams\x18\x38 \x01(\x0b\x32\x11.ListFaceIdParamsH\x00\"\xab\x03\n\x08\x46unction\x12\x0c\n\x08setModel\x10\x00\x12\x11\n\rgetDeviceInfo\x10\x01\x12\x13\n\x0fupgradeFirmware\x10\x02\x12\x0f\n\x0bsetExposure\x10\n\x12\x0e\n\nsetFlasher\x10\x0b\x12\x11\n\rsetMainCamera\x10\x0c\x12\x15\n\x11setCameraRotation\x10\r\x12\x0c\n\x08listFile\x10\x14\x12\x0e\n\nuploadFile\x10\x15\x12\x0e\n\ndeleteFile\x10\x16\x12\x13\n\x0f\x66ormatPartition\x10\x17\x12\x12\n\x0etakeRawPicture\x10(\x12\x13\n\x0fsetDebugDrawing\x10)\x12\x12\n\x0egetFaceLibInfo\x10\x33\x12\x10\n\x0c\x63learFaceLib\x10\x34\x12\x19\n\x15registerFaceIdWithPic\x10\x35\x12\x1c\n\x18registerFaceIdFromCamera\x10\x36\x12\x10\n\x0c\x64\x65leteFaceId\x10\x37\x12\r\n\tsetFaceId\x10\x38\x12\x0e\n\ngetFacePic\x10\x39\x12\x0e\n\nlistFaceId\x10:\x12\x12\n\x0e\x64\x65leteFaceName\x10;B\x08\n\x06params\"\xe8\x04\n\rYtRpcResponse\x12\x12\n\nsequenceId\x18\x01 \x01(\x05\x12\'\n\x04\x63ode\x18\x02 \x02(\x0e\x32\x19.YtRpcResponse.ReturnCode\x12\x11\n\x07strData\x18\x03 \x01(\tH\x00\x12\x11\n\x07intData\x18\x04 \x01(\x05H\x00\x12)\n\x0e\x66ileListResult\x18\x14 \x01(\x0b\x32\x0f.FileListResultH\x00\x12\x1d\n\x08\x66ilePart\x18( \x01(\x0b\x32\t.FilePartH\x00\x12)\n\x0e\x66\x61\x63\x65IdListData\x18\x32 \x01(\x0b\x32\x0f.FaceIdListDataH\x00\"\xf6\x02\n\nReturnCode\x12\x08\n\x04SUCC\x10\x00\x12\x0c\n\x08\x43ONTINUE\x10\x01\x12\x0f\n\x0b\x45RROR_OTHER\x10\x02\x12\r\n\tERROR_CRC\x10\x03\x12\x14\n\x10\x45RROR_PARAMETERS\x10\x04\x12\x16\n\x12\x45RROR_INVALID_PATH\x10\x14\x12\x1c\n\x18\x45RROR_FILE_EXCEED_LIMITS\x10\x15\x12*\n&ERROR_REGISTER_FACEID_NO_FACE_DETECTED\x10\x32\x12(\n$ERROR_REGISTER_FACEID_TOO_MANY_FACES\x10\x33\x12+\n\'ERROR_REGISTER_FACEID_FILE_NOT_READABLE\x10\x34\x12\"\n\x1e\x45RROR_REGISTER_FACEID_LIB_FULL\x10\x35\x12!\n\x1d\x45RROR_REGISTER_FACEID_TIMEOUT\x10\x36\x12\x1a\n\x16\x45RROR_FACEID_NOT_EXIST\x10\x37\x42\x06\n\x04\x64\x61ta\"i\n\x05YtMsg\x12\x15\n\x03rpc\x18\x01 \x01(\x0b\x32\x06.YtRpcH\x00\x12\"\n\x08response\x18\x02 \x01(\x0b\x32\x0e.YtRpcResponseH\x00\x12\x1b\n\x06result\x18\x03 \x01(\x0b\x32\t.YtResultH\x00\x42\x08\n\x06values')
   ,
   dependencies=[CameraExposureParams__pb2.DESCRIPTOR,FlasherParams__pb2.DESCRIPTOR,FaceDetectionResult__pb2.DESCRIPTOR,SystemStatusResult__pb2.DESCRIPTOR,FileListResult__pb2.DESCRIPTOR,FilePart__pb2.DESCRIPTOR,RegisterFaceIdWithPicParams__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -92,11 +92,11 @@ _YTRPC_FUNCTION = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='getFaceLibsInfo', index=13, number=51,
+      name='getFaceLibInfo', index=13, number=51,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='clearFaceLibs', index=14, number=52,
+      name='clearFaceLib', index=14, number=52,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
@@ -111,11 +111,27 @@ _YTRPC_FUNCTION = _descriptor.EnumDescriptor(
       name='deleteFaceId', index=17, number=55,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='setFaceId', index=18, number=56,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='getFacePic', index=19, number=57,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='listFaceId', index=20, number=58,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='deleteFaceName', index=21, number=59,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=679,
-  serialized_end=1041,
+  serialized_start=846,
+  serialized_end=1273,
 )
 _sym_db.RegisterEnumDescriptor(_YTRPC_FUNCTION)
 
@@ -142,30 +158,46 @@ _YTRPCRESPONSE_RETURNCODE = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ERROR_INVALID_PATH', index=4, number=20,
+      name='ERROR_PARAMETERS', index=4, number=4,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ERROR_REGISTER_FACEID_NO_FACE_DETECTED', index=5, number=50,
+      name='ERROR_INVALID_PATH', index=5, number=20,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ERROR_REGISTER_FACEID_TOO_MANY_FACES', index=6, number=51,
+      name='ERROR_FILE_EXCEED_LIMITS', index=6, number=21,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ERROR_REGISTER_FACEID_FILE_NOT_READABLE', index=7, number=52,
+      name='ERROR_REGISTER_FACEID_NO_FACE_DETECTED', index=7, number=50,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ERROR_DELETE_FACEID_NOT_EXIST', index=8, number=55,
+      name='ERROR_REGISTER_FACEID_TOO_MANY_FACES', index=8, number=51,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ERROR_REGISTER_FACEID_FILE_NOT_READABLE', index=9, number=52,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ERROR_REGISTER_FACEID_LIB_FULL', index=10, number=53,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ERROR_REGISTER_FACEID_TIMEOUT', index=11, number=54,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ERROR_FACEID_NOT_EXIST', index=12, number=55,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=1245,
-  serialized_end=1503,
+  serialized_start=1520,
+  serialized_end=1894,
 )
 _sym_db.RegisterEnumDescriptor(_YTRPCRESPONSE_RETURNCODE)
 
@@ -295,6 +327,27 @@ _YTRPC = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='registerFaceIdFromCameraParams', full_name='YtRpc.registerFaceIdFromCameraParams', index=8,
+      number=54, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='setFaceIdParams', full_name='YtRpc.setFaceIdParams', index=9,
+      number=55, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='listFaceIdParams', full_name='YtRpc.listFaceIdParams', index=10,
+      number=56, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -312,7 +365,7 @@ _YTRPC = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=380,
-  serialized_end=1051,
+  serialized_end=1283,
 )
 
 
@@ -365,6 +418,13 @@ _YTRPCRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='faceIdListData', full_name='YtRpcResponse.faceIdListData', index=6,
+      number=50, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -381,8 +441,8 @@ _YTRPCRESPONSE = _descriptor.Descriptor(
       name='data', full_name='YtRpcResponse.data',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1054,
-  serialized_end=1511,
+  serialized_start=1286,
+  serialized_end=1902,
 )
 
 
@@ -429,8 +489,8 @@ _YTMSG = _descriptor.Descriptor(
       name='values', full_name='YtMsg.values',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1513,
-  serialized_end=1618,
+  serialized_start=1904,
+  serialized_end=2009,
 )
 
 _YTRESULT.fields_by_name['faceDetectionResult'].message_type = FaceDetectionResult__pb2._FACEDETECTIONRESULT
@@ -449,6 +509,9 @@ _YTRPC.fields_by_name['cameraExposureParams'].message_type = CameraExposureParam
 _YTRPC.fields_by_name['flasherParams'].message_type = FlasherParams__pb2._FLASHERPARAMS
 _YTRPC.fields_by_name['filePart'].message_type = FilePart__pb2._FILEPART
 _YTRPC.fields_by_name['registerFaceIdWithPicParams'].message_type = RegisterFaceIdWithPicParams__pb2._REGISTERFACEIDWITHPICPARAMS
+_YTRPC.fields_by_name['registerFaceIdFromCameraParams'].message_type = RegisterFaceIdWithPicParams__pb2._REGISTERFACEIDFROMCAMERAPARAMS
+_YTRPC.fields_by_name['setFaceIdParams'].message_type = RegisterFaceIdWithPicParams__pb2._SETFACEIDPARAMS
+_YTRPC.fields_by_name['listFaceIdParams'].message_type = RegisterFaceIdWithPicParams__pb2._LISTFACEIDPARAMS
 _YTRPC_FUNCTION.containing_type = _YTRPC
 _YTRPC.oneofs_by_name['params'].fields.append(
   _YTRPC.fields_by_name['strParams'])
@@ -468,9 +531,19 @@ _YTRPC.fields_by_name['filePart'].containing_oneof = _YTRPC.oneofs_by_name['para
 _YTRPC.oneofs_by_name['params'].fields.append(
   _YTRPC.fields_by_name['registerFaceIdWithPicParams'])
 _YTRPC.fields_by_name['registerFaceIdWithPicParams'].containing_oneof = _YTRPC.oneofs_by_name['params']
+_YTRPC.oneofs_by_name['params'].fields.append(
+  _YTRPC.fields_by_name['registerFaceIdFromCameraParams'])
+_YTRPC.fields_by_name['registerFaceIdFromCameraParams'].containing_oneof = _YTRPC.oneofs_by_name['params']
+_YTRPC.oneofs_by_name['params'].fields.append(
+  _YTRPC.fields_by_name['setFaceIdParams'])
+_YTRPC.fields_by_name['setFaceIdParams'].containing_oneof = _YTRPC.oneofs_by_name['params']
+_YTRPC.oneofs_by_name['params'].fields.append(
+  _YTRPC.fields_by_name['listFaceIdParams'])
+_YTRPC.fields_by_name['listFaceIdParams'].containing_oneof = _YTRPC.oneofs_by_name['params']
 _YTRPCRESPONSE.fields_by_name['code'].enum_type = _YTRPCRESPONSE_RETURNCODE
 _YTRPCRESPONSE.fields_by_name['fileListResult'].message_type = FileListResult__pb2._FILELISTRESULT
 _YTRPCRESPONSE.fields_by_name['filePart'].message_type = FilePart__pb2._FILEPART
+_YTRPCRESPONSE.fields_by_name['faceIdListData'].message_type = RegisterFaceIdWithPicParams__pb2._FACEIDLISTDATA
 _YTRPCRESPONSE_RETURNCODE.containing_type = _YTRPCRESPONSE
 _YTRPCRESPONSE.oneofs_by_name['data'].fields.append(
   _YTRPCRESPONSE.fields_by_name['strData'])
@@ -484,6 +557,9 @@ _YTRPCRESPONSE.fields_by_name['fileListResult'].containing_oneof = _YTRPCRESPONS
 _YTRPCRESPONSE.oneofs_by_name['data'].fields.append(
   _YTRPCRESPONSE.fields_by_name['filePart'])
 _YTRPCRESPONSE.fields_by_name['filePart'].containing_oneof = _YTRPCRESPONSE.oneofs_by_name['data']
+_YTRPCRESPONSE.oneofs_by_name['data'].fields.append(
+  _YTRPCRESPONSE.fields_by_name['faceIdListData'])
+_YTRPCRESPONSE.fields_by_name['faceIdListData'].containing_oneof = _YTRPCRESPONSE.oneofs_by_name['data']
 _YTMSG.fields_by_name['rpc'].message_type = _YTRPC
 _YTMSG.fields_by_name['response'].message_type = _YTRPCRESPONSE
 _YTMSG.fields_by_name['result'].message_type = _YTRESULT
