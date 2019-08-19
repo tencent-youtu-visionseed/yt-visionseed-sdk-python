@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='FaceDetectionResult.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x19\x46\x61\x63\x65\x44\x65tectionResult.proto\"2\n\x04Rect\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\t\n\x01w\x18\x03 \x02(\x05\x12\t\n\x01h\x18\x04 \x02(\x05\"0\n\x04Pose\x12\x0c\n\x04roll\x18\x01 \x02(\x02\x12\x0b\n\x03yaw\x18\x02 \x02(\x02\x12\r\n\x05pitch\x18\x03 \x02(\x02\"U\n\tFaceShape\x12\r\n\x01x\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\r\n\x01y\x18\x02 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nvisibility\x18\x03 \x03(\x02\x42\x02\x10\x01\x12\x12\n\nconfidence\x18\x04 \x02(\x02\"\xb2\x02\n\x04\x46\x61\x63\x65\x12\x13\n\x04rect\x18\x01 \x02(\x0b\x32\x05.Rect\x12\x19\n\x05shape\x18\x02 \x01(\x0b\x32\n.FaceShape\x12\x13\n\x04pose\x18\x03 \x01(\x0b\x32\x05.Pose\x12\x12\n\nconfidence\x18\x04 \x02(\x02\x12\x16\n\x0enameConfidence\x18\t \x01(\x02\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0b\n\x03\x61ge\x18\x0b \x01(\x05\x12&\n\nproperties\x18\x0c \x03(\x0e\x32\x12.Face.FaceProperty\x12\x1c\n\x06gender\x18\r \x01(\x0e\x32\x0c.Face.Gender\x12\r\n\x05\x61live\x18\x0e \x01(\x08\",\n\x0c\x46\x61\x63\x65Property\x12\t\n\x05GLASS\x10\x00\x12\x08\n\x04MASK\x10\x01\x12\x07\n\x03HAT\x10\x02\"\x1b\n\x06Gender\x12\x08\n\x04GIRL\x10\x00\x12\x07\n\x03\x42OY\x10\x01\"I\n\x13\x46\x61\x63\x65\x44\x65tectionResult\x12\r\n\x05width\x18\x01 \x02(\x05\x12\x0e\n\x06height\x18\x02 \x02(\x05\x12\x13\n\x04\x66\x61\x63\x65\x18\x03 \x03(\x0b\x32\x05.Face')
+  serialized_pb=_b('\n\x19\x46\x61\x63\x65\x44\x65tectionResult.proto\"2\n\x04Rect\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\t\n\x01w\x18\x03 \x02(\x05\x12\t\n\x01h\x18\x04 \x02(\x05\"0\n\x04Pose\x12\x0c\n\x04roll\x18\x01 \x02(\x02\x12\x0b\n\x03yaw\x18\x02 \x02(\x02\x12\r\n\x05pitch\x18\x03 \x02(\x02\"U\n\tFaceShape\x12\r\n\x01x\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\r\n\x01y\x18\x02 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nvisibility\x18\x03 \x03(\x02\x42\x02\x10\x01\x12\x12\n\nconfidence\x18\x04 \x02(\x02\"\xd4\x02\n\x04\x46\x61\x63\x65\x12\x13\n\x04rect\x18\x01 \x02(\x0b\x32\x05.Rect\x12\x19\n\x05shape\x18\x02 \x01(\x0b\x32\n.FaceShape\x12\x13\n\x04pose\x18\x03 \x01(\x0b\x32\x05.Pose\x12\x12\n\nconfidence\x18\x04 \x02(\x02\x12\x0f\n\x07traceId\x18\x05 \x01(\r\x12\x0f\n\x07quality\x18\x06 \x01(\x02\x12\x16\n\x0enameConfidence\x18\t \x01(\x02\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0b\n\x03\x61ge\x18\x0b \x01(\x05\x12&\n\nproperties\x18\x0c \x03(\x0e\x32\x12.Face.FaceProperty\x12\x1c\n\x06gender\x18\r \x01(\x0e\x32\x0c.Face.Gender\x12\r\n\x05\x61live\x18\x0e \x01(\x08\",\n\x0c\x46\x61\x63\x65Property\x12\t\n\x05GLASS\x10\x00\x12\x08\n\x04MASK\x10\x01\x12\x07\n\x03HAT\x10\x02\"\x1b\n\x06Gender\x12\x08\n\x04GIRL\x10\x00\x12\x07\n\x03\x42OY\x10\x01\"I\n\x13\x46\x61\x63\x65\x44\x65tectionResult\x12\r\n\x05width\x18\x01 \x02(\x05\x12\x0e\n\x06height\x18\x02 \x02(\x05\x12\x13\n\x04\x66\x61\x63\x65\x18\x03 \x03(\x0b\x32\x05.Face')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -46,8 +46,8 @@ _FACE_FACEPROPERTY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=452,
-  serialized_end=496,
+  serialized_start=486,
+  serialized_end=530,
 )
 _sym_db.RegisterEnumDescriptor(_FACE_FACEPROPERTY)
 
@@ -68,8 +68,8 @@ _FACE_GENDER = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=498,
-  serialized_end=525,
+  serialized_start=532,
+  serialized_end=559,
 )
 _sym_db.RegisterEnumDescriptor(_FACE_GENDER)
 
@@ -259,42 +259,56 @@ _FACE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='nameConfidence', full_name='Face.nameConfidence', index=4,
+      name='traceId', full_name='Face.traceId', index=4,
+      number=5, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='quality', full_name='Face.quality', index=5,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='nameConfidence', full_name='Face.nameConfidence', index=6,
       number=9, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='name', full_name='Face.name', index=5,
+      name='name', full_name='Face.name', index=7,
       number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='age', full_name='Face.age', index=6,
+      name='age', full_name='Face.age', index=8,
       number=11, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='Face.properties', index=7,
+      name='properties', full_name='Face.properties', index=9,
       number=12, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='gender', full_name='Face.gender', index=8,
+      name='gender', full_name='Face.gender', index=10,
       number=13, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='alive', full_name='Face.alive', index=9,
+      name='alive', full_name='Face.alive', index=11,
       number=14, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -315,7 +329,7 @@ _FACE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=219,
-  serialized_end=525,
+  serialized_end=559,
 )
 
 
@@ -359,8 +373,8 @@ _FACEDETECTIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=527,
-  serialized_end=600,
+  serialized_start=561,
+  serialized_end=634,
 )
 
 _FACE.fields_by_name['rect'].message_type = _RECT

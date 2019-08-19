@@ -11,7 +11,7 @@ def recvMsg():
         if msg:
             if msg.result.HasField('faceDetectionResult'):
                 if len(msg.result.faceDetectionResult.face) > 0:
-                    print("[%d] %s (%.3f)" % (msg.result.frameId, msg.result.faceDetectionResult.face[0].name, msg.result.faceDetectionResult.face[0].nameConfidence))
+                    print("[%d] %s (confidence: %.3f, traceId: %d)" % (msg.result.frameId, msg.result.faceDetectionResult.face[0].name, msg.result.faceDetectionResult.face[0].nameConfidence, msg.result.faceDetectionResult.face[0].traceId))
                 return msg
 
 while True:
