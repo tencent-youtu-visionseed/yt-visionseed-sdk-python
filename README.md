@@ -1,6 +1,6 @@
 ### python-sdk for VisionSeed - a camera module with AI ability
 
-[![License](https://img.shields.io/github/license/tencent-youtu-visionseed/yt-visionseed-sdk-linux)](https://raw.githubusercontent.com/tencent-youtu-visionseed/yt-visionseed-sdk-linux/master/LICENSE)
+[![License](https://img.shields.io/github/license/tencent-youtu-visionseed/yt-visionseed-sdk-python)](https://raw.githubusercontent.com/tencent-youtu-visionseed/yt-visionseed-sdk-python/master/LICENSE)
 
 ---
 
