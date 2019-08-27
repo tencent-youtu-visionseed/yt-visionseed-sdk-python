@@ -1,5 +1,9 @@
 ### python-sdk for VisionSeed - a camera module with AI ability
 
+[![License](https://img.shields.io/github/license/tencent-youtu-visionseed/yt-visionseed-sdk-linux)](https://raw.githubusercontent.com/tencent-youtu-visionseed/yt-visionseed-sdk-linux/master/LICENSE)
+
+---
+
 # install
 ```shell
 pip3 install visionseed
@@ -21,3 +25,6 @@ datalink = vs.YtDataLink( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
 
 # more
 Homepage: https://visionseed.youtu.qq.com
+
+技术交流QQ群: 684338220(超多大佬)
+
