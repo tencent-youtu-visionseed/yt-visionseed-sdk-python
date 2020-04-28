@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='RegisterFaceIdWithPicParams.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n!RegisterFaceIdWithPicParams.proto\"A\n\x1bRegisterFaceIdWithPicParams\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x01 \x02(\t\x12\x10\n\x08\x66ilePath\x18\x02 \x02(\t\"E\n\x1eRegisterFaceIdFromCameraParams\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x01 \x02(\t\x12\x11\n\ttimeoutMs\x18\x02 \x02(\x05\"3\n\x0fSetFaceIdParams\x12\x0e\n\x06\x66\x61\x63\x65Id\x18\x01 \x02(\x05\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x02 \x02(\t\"1\n\x10ListFaceIdParams\x12\r\n\x05start\x18\x01 \x02(\x05\x12\x0e\n\x06length\x18\x02 \x02(\x05\".\n\nFaceIdInfo\x12\x0e\n\x06\x66\x61\x63\x65Id\x18\x01 \x02(\x05\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x02 \x02(\t\";\n\x0e\x46\x61\x63\x65IdListData\x12\r\n\x05start\x18\x01 \x02(\x05\x12\x1a\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x0b.FaceIdInfo')
+  serialized_pb=_b('\n!RegisterFaceIdWithPicParams.proto\"A\n\x1bRegisterFaceIdWithPicParams\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x01 \x02(\t\x12\x10\n\x08\x66ilePath\x18\x02 \x02(\t\"E\n\x1eRegisterFaceIdFromCameraParams\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x01 \x02(\t\x12\x11\n\ttimeoutMs\x18\x02 \x02(\x05\"D\n\x1fRegisterFaceIdWithTraceIdParams\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x01 \x02(\t\x12\x0f\n\x07traceId\x18\x02 \x02(\r\"3\n\x0fSetFaceIdParams\x12\x0e\n\x06\x66\x61\x63\x65Id\x18\x01 \x02(\x05\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x02 \x02(\t\"1\n\x10ListFaceIdParams\x12\r\n\x05start\x18\x01 \x02(\x05\x12\x0e\n\x06length\x18\x02 \x02(\x05\".\n\nFaceIdInfo\x12\x0e\n\x06\x66\x61\x63\x65Id\x18\x01 \x02(\x05\x12\x10\n\x08\x66\x61\x63\x65Name\x18\x02 \x02(\t\";\n\x0e\x46\x61\x63\x65IdListData\x12\r\n\x05start\x18\x01 \x02(\x05\x12\x1a\n\x05\x66\x61\x63\x65s\x18\x02 \x03(\x0b\x32\x0b.FaceIdInfo')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -102,6 +102,44 @@ _REGISTERFACEIDFROMCAMERAPARAMS = _descriptor.Descriptor(
 )
 
 
+_REGISTERFACEIDWITHTRACEIDPARAMS = _descriptor.Descriptor(
+  name='RegisterFaceIdWithTraceIdParams',
+  full_name='RegisterFaceIdWithTraceIdParams',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='faceName', full_name='RegisterFaceIdWithTraceIdParams.faceName', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='traceId', full_name='RegisterFaceIdWithTraceIdParams.traceId', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=175,
+  serialized_end=243,
+)
+
+
 _SETFACEIDPARAMS = _descriptor.Descriptor(
   name='SetFaceIdParams',
   full_name='SetFaceIdParams',
@@ -135,8 +173,8 @@ _SETFACEIDPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=175,
-  serialized_end=226,
+  serialized_start=245,
+  serialized_end=296,
 )
 
 
@@ -173,8 +211,8 @@ _LISTFACEIDPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=228,
-  serialized_end=277,
+  serialized_start=298,
+  serialized_end=347,
 )
 
 
@@ -211,8 +249,8 @@ _FACEIDINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=279,
-  serialized_end=325,
+  serialized_start=349,
+  serialized_end=395,
 )
 
 
@@ -249,13 +287,14 @@ _FACEIDLISTDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=327,
-  serialized_end=386,
+  serialized_start=397,
+  serialized_end=456,
 )
 
 _FACEIDLISTDATA.fields_by_name['faces'].message_type = _FACEIDINFO
 DESCRIPTOR.message_types_by_name['RegisterFaceIdWithPicParams'] = _REGISTERFACEIDWITHPICPARAMS
 DESCRIPTOR.message_types_by_name['RegisterFaceIdFromCameraParams'] = _REGISTERFACEIDFROMCAMERAPARAMS
+DESCRIPTOR.message_types_by_name['RegisterFaceIdWithTraceIdParams'] = _REGISTERFACEIDWITHTRACEIDPARAMS
 DESCRIPTOR.message_types_by_name['SetFaceIdParams'] = _SETFACEIDPARAMS
 DESCRIPTOR.message_types_by_name['ListFaceIdParams'] = _LISTFACEIDPARAMS
 DESCRIPTOR.message_types_by_name['FaceIdInfo'] = _FACEIDINFO
@@ -274,6 +313,13 @@ RegisterFaceIdFromCameraParams = _reflection.GeneratedProtocolMessageType('Regis
   # @@protoc_insertion_point(class_scope:RegisterFaceIdFromCameraParams)
   ))
 _sym_db.RegisterMessage(RegisterFaceIdFromCameraParams)
+
+RegisterFaceIdWithTraceIdParams = _reflection.GeneratedProtocolMessageType('RegisterFaceIdWithTraceIdParams', (_message.Message,), dict(
+  DESCRIPTOR = _REGISTERFACEIDWITHTRACEIDPARAMS,
+  __module__ = 'RegisterFaceIdWithPicParams_pb2'
+  # @@protoc_insertion_point(class_scope:RegisterFaceIdWithTraceIdParams)
+  ))
+_sym_db.RegisterMessage(RegisterFaceIdWithTraceIdParams)
 
 SetFaceIdParams = _reflection.GeneratedProtocolMessageType('SetFaceIdParams', (_message.Message,), dict(
   DESCRIPTOR = _SETFACEIDPARAMS,

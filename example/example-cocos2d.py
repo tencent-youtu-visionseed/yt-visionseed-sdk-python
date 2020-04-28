@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# author: chenliang @ Youtu Lab, Tencent
 import visionseed as vs
 import serial
 
@@ -14,28 +15,10 @@ import pyglet
 from pyglet.gl import *
 
 import matplotlib
-import matplotlib.pyplot as plt
-
-# msg = vs.YtMsg()
-# msg.rpc.func = msg.rpc.setFlasher
-# msg.rpc.flasherParams.ir = 50
-# data = msg.SerializeToString()
-# print(data)
-#
-#
-# target = vs.YtMsg()
-# target.ParseFromString(data)
-# print(target)
-
 
 datalink = vs.YtDataLink( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
-
-#
-# cap.set(cv2.CAP_PROP_FPS, 30)
-# cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-# cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 if (cap.isOpened() == False):
     print("Unable to read camera feed")
@@ -45,19 +28,11 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 window_width = frame_width
 window_height = frame_height
-x = []
-data = []
-plt.ion()
-fig, ax = plt.subplots()
-ax.set(xlabel='frame', ylabel='',
-       title='Mouth openness')
-ax.grid()
-line, = ax.plot([], [], 'r-') # Returns a tuple of line objects, thus the comma
 
 class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
     def __init__(self):
         super(hello_visionseed, self).__init__()
-        self.skipSync = False
+        self.skipSync = 0
         self.frame = None
         self.msg = None
         self.sprite = None
@@ -152,14 +127,15 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
 
     def recvMsg(self):
         while True:
-            msg = datalink.recvRunOnce()
+            result, msg = datalink.recvRunOnce()
             if msg:
                 # print(msg)
                 if msg.result.HasField('frameId'):
-                    self.msg = {'msg':msg, 'frameId':msg.result.frameId}
+                    self.msg = {'msg':msg, 'result':result, 'frameId':msg.result.frameId}
                     break
                 elif msg.result.HasField('systemStatusResult'):
-                    print(msg)
+                    #print(msg)
+                    pass
     def recvFrame(self):
         ret, frame = cap.read()
         if ret == True:
@@ -180,7 +156,7 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
             self.frame = {'frame':bgr, 'frameId':seq}
 
     def callback(self, dt):
-        print('%f seconds since last callback' % dt)
+        #print('%f seconds since last callback' % dt)
 
         # 根据frameId同步
         while self.msg == None:
@@ -188,88 +164,111 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
         while self.frame == None:
             self.recvFrame()
         if abs(self.frame['frameId'] - self.msg['frameId']) > 3600:
-            print('Your VisionSeed may running old firmware!')
-            self.skipSync = True
-        if not self.skipSync:
-            while self.frame['frameId'] > self.msg['frameId']:
-                # print('seq =', self.frame['frameId'], self.msg['frameId'])
-                self.recvMsg()
-            while self.frame['frameId'] < self.msg['frameId']:
-                # print('seq =', self.frame['frameId'], self.msg['frameId'])
-                self.recvFrame()
-            if self.frame['frameId'] != self.msg['frameId']:
-                print('miss =', self.frame['frameId'], self.msg['frameId'])
-                return
+            self.skipSync += 1
+            if (self.skipSync >= 10):
+                print('Your VisionSeed may running old firmware! %d != %d' % (self.frame['frameId'], self.msg['frameId']))
+            self.msg = None
+            self.frame = None
+            return
+
+        while self.frame['frameId'] > self.msg['frameId']:
+            # print('seq =', self.frame['frameId'], self.msg['frameId'])
+            self.recvMsg()
+        while self.frame['frameId'] < self.msg['frameId']:
+            # print('seq =', self.frame['frameId'], self.msg['frameId'])
+            self.recvFrame()
+        if self.frame['frameId'] != self.msg['frameId']:
+            print('miss =', self.frame['frameId'], self.msg['frameId'])
+            return
 
         # print(''.join('{:02x} '.format(x) for x in buf))
-        msg = self.msg['msg']
+        result = self.msg['result']
         frame = self.frame['frame']
 
         drawRects = []
-        if msg and msg.result.HasField('faceDetectionResult'):
-            faces = msg.result.faceDetectionResult.face
-            if len(faces) > 0:
-                self.setFlasher(50)
-                sw = msg.result.faceDetectionResult.width
-                sh = msg.result.faceDetectionResult.height
-                face = faces[0]
-                rect = face.rect
-                # print(rect)
-                center = ((rect.x+rect.w/2)/sw*window_width, (1-(rect.y+rect.h/2)/sh)*window_height)
-                self.label.position = center
 
-                # 获取90个配准点
-                shape = vs.YtFaceAlignment.YtFaceShape(face.shape)
-                # 计算嘴巴姿态
-                dia = (shape.mouth[0] - shape.mouth[6])
-                dia_y = ((shape.mouth[3] - shape.mouth[9]) + (shape.mouth[14] - shape.mouth[19])) / 2
-                scale = max(0.25, dia_y.length()/dia.length()) * 4 + 0.1
-                # print(dia_y.length()/dia.length())
-                # 计算嘴巴中点
-                p = (shape.mouth[0] + shape.mouth[6] + shape.mouth[14] + shape.mouth[19])/4
-                for i, mouth in enumerate(self.mouth):
-                    mouth.position = (p.x/sw*window_width, (1-p.y/sh)*window_height)
-                    mouth.rotation = math.atan2(-dia.y, -dia.x) * 180 / math.pi
-                    mouth.scale_x = dia.length() / 512 * scale
-                    if i==0:
-                        mouth.scale_y = mouth.scale_x
-                    else:
-                        mouth.scale_y = (dia_y.length() + 10) / 512 * scale
-                if (scale <= 1.2):
-                    self.mouth[0].opacity = 250
-                    self.mouth[1].opacity = 0
-                else:
-                    self.mouth[0].opacity = 0
-                    self.mouth[1].opacity = 250
+        YtVisionSeedModel = vs.YtDataLink.YtVisionSeedModel
+        count = result.getResult([YtVisionSeedModel.FACE_DETECTION])
+        # 打印信息
+        for i in range(count):
+            line = ''
+            # 获取检测框
+            rect = result.getResult([YtVisionSeedModel.FACE_DETECTION, i])
+            if (rect):
+                line += 'rect: (%d, %d, %d, %d) ' % (rect.x, rect.y, rect.w, rect.h)
 
-                if (len(data) > 100):
-                    data.pop(0)
-                else:
-                    x.append(len(data))
-                data.append(dia_y.length()/dia.length())
-                # print(data)
+            # 获取人脸识别结果
+            faceName = result.getResult([YtVisionSeedModel.FACE_DETECTION, i, YtVisionSeedModel.FACE_RECOGNITION])
+            if (faceName):
+                line += 'name: %s (confidence: %.3f) ' % (faceName.str, faceName.conf)
 
-                line.set_xdata(x)
-                line.set_ydata(data)
-                ax.relim()        # Recalculate limits
-                ax.autoscale_view(True,True,True) #Autoscale
+            # 获取轨迹ID
+            traceId = result.getResult([YtVisionSeedModel.FACE_DETECTION, i, YtVisionSeedModel.DETECTION_TRACE])
+            if not (traceId is None):
+                line += 'traceId: %d ' % traceId
 
-                fig.canvas.draw()
-            else:
-                self.setFlasher(0)
+            # 获取人脸姿态
+            pose = result.getResult([YtVisionSeedModel.FACE_DETECTION, i, YtVisionSeedModel.FACE_POSE])
+            if not (pose is None):
+                line += 'pose(roll,yaw,pitch): (%5.1f, %5.1f, %5.1f) ' % (pose.array[0], pose.array[1], pose.array[2])
 
-            for face in faces:
-                rect = face.rect
+            # 获取90点关键点
+            shape = result.getResult([YtVisionSeedModel.FACE_DETECTION, i, YtVisionSeedModel.FACE_LANDMARK])
+            if (shape):
+                faceShape = shape.faceShape
+                l1 = (faceShape.mouth[0] - faceShape.mouth[6]).length()
+                l2 = (faceShape.mouth[3] - faceShape.mouth[9]).length()
+                ratio = (l2 / (l1 + 0.01))
+                line += 'mouth: ' + ('open' if ratio > 1 else 'close')
+            print(line)
+
+        # 绘制
+        for i in range(count):
+            # 获取检测框
+            rect = result.getResult([YtVisionSeedModel.FACE_DETECTION, i])
+            if (rect):
                 drawRects.append(rect)
                 # cv2.rectangle(frame, (rect.x, rect.y), (rect.x+rect.w, rect.y+rect.h), (255), 5)
+
+            # 嘴巴贴图
+            if i == 0:
+                # 获取90点关键点
+                shape = result.getResult([YtVisionSeedModel.FACE_DETECTION, i, YtVisionSeedModel.FACE_LANDMARK])
+                if (shape):
+                    shape = shape.faceShape
+                    # 计算嘴巴姿态
+                    dia = (shape.mouth[0] - shape.mouth[6])
+                    dia_y = ((shape.mouth[3] - shape.mouth[9]) + (shape.mouth[14] - shape.mouth[19])) / 2
+                    scale = max(0.25, dia_y.length()/dia.length()) * 4 + 0.1
+                    # print(dia_y.length()/dia.length())
+                    # 计算嘴巴中点
+                    p = (shape.mouth[0] + shape.mouth[6] + shape.mouth[14] + shape.mouth[19])/4
+                    for i, mouth in enumerate(self.mouth):
+                        mouth.position = ((rect.x + p.x)/frame_width*window_width, (1-(rect.y + p.y)/frame_height)*window_height)
+                        mouth.rotation = math.atan2(-dia.y, -dia.x) * 180 / math.pi
+                        mouth.scale_x = dia.length() / 512 * scale
+                        if i==0:
+                            mouth.scale_y = mouth.scale_x
+                        else:
+                            mouth.scale_y = (dia_y.length() + 10) / 512 * scale
+                    if (scale <= 1.2):
+                        self.mouth[0].opacity = 250
+                        self.mouth[1].opacity = 0
+                    else:
+                        self.mouth[0].opacity = 0
+                        self.mouth[1].opacity = 250
+                else:
+                    self.mouth[0].opacity = 0
+                    self.mouth[1].opacity = 0
 
         self.drawImage(frame, drawRects)
 
         self.msg = None
         self.frame = None
 
-director.director.init(width=window_width, height=window_height) #初始化导演类，一个应用程序只有一个导演类（全局）
-# director.director.set_show_FPS(True)
-hello_layer = hello_visionseed() #实例化一个图层
-main_scene = cocos.scene.Scene(hello_layer) #初始化一个场景，并将图层加入到场景中
-cocos.director.director.run(main_scene) #用导演类来运行第一个场景
+if __name__ == '__main__':
+    director.director.init(width=window_width, height=window_height) #初始化导演类，一个应用程序只有一个导演类（全局）
+    # director.director.set_show_FPS(True)
+    hello_layer = hello_visionseed() #实例化一个图层
+    main_scene = cocos.scene.Scene(hello_layer) #初始化一个场景，并将图层加入到场景中
+    cocos.director.director.run(main_scene) #用导演类来运行第一个场景

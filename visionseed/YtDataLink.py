@@ -9,8 +9,152 @@
 #     parser.on('data', console.log)
 #  */
 from .YtMsg_pb2 import *
+from . import YtFaceAlignment
+import numpy as np
 
 class YtDataLink:
+    class YtVisionSeedResultType:
+        YT_RESULT_RECT = 0
+        YT_RESULT_ARRAY = 1
+        YT_RESULT_CLASSIFICATION = 2
+        YT_RESULT_STRING = 3
+        YT_RESULT_POINTS = 4
+        YT_RESULT_VARUINT32 = 5
+
+    class AttributeDict(dict):
+        def __getattr__(self, attr):
+            return self[attr]
+        def __setattr__(self, attr, value):
+            self[attr] = value
+
+    class YtVisionSeedResultTypeConfidence:
+        def __init__ (self):
+            self.type = 'YtVisionSeedResultTypeConfidence'
+            self.conf = 0
+        def parse (self, bufObj, count):
+            conf = YtDataLink.unpackUInt16(bufObj)
+            self.conf = conf / 65535
+    class YtVisionSeedResultTypeClassification(YtVisionSeedResultTypeConfidence):
+        def __init__ (self):
+            super().__init__()
+            self.type = 'YtVisionSeedResultTypeClassification'
+            self.cls = 0
+        def parse (self, bufObj, count):
+            super().parse(bufObj, count)
+            self.cls = YtDataLink.unpackUInt16(bufObj)
+    class YtVisionSeedResultTypeRect(YtVisionSeedResultTypeClassification):
+        def __init__ (self):
+            super().__init__()
+            self.type = 'YtVisionSeedResultTypeRect'
+            self.x = 0
+            self.y = 0
+            self.w = 0
+            self.h = 0
+        def parse (self, bufObj, count):
+            super().parse(bufObj, count)
+            self.x = YtDataLink.unpackInt16(bufObj)
+            self.y = YtDataLink.unpackInt16(bufObj)
+            self.w = YtDataLink.unpackInt16(bufObj)
+            self.h = YtDataLink.unpackInt16(bufObj)
+
+    class YtVisionSeedResultTypeArray:
+        def __init__ (self):
+            self.type = 'YtVisionSeedResultTypeArray'
+            self.array = []
+
+        def parse (self, bufObj, count):
+            cur_data = bufObj.p[bufObj.i : bufObj.i + count]
+            dt = np.dtype(np.float32)
+            dt = dt.newbyteorder('<')
+            self.array = np.frombuffer(cur_data, dtype=dt).tolist()
+            bufObj.i += count
+
+    class YtVisionSeedResultTypeString(YtVisionSeedResultTypeConfidence):
+        def __init__ (self):
+            super().__init__()
+            self.type = 'YtVisionSeedResultTypeString'
+            self.str = ''
+
+        def parse (self, bufObj, count):
+            if (count < 3): #at least 1 for the null terminator and 2 for confidence
+                return
+
+            super().parse(bufObj, count)
+            cur_data = bufObj.p[bufObj.i : bufObj.i + count - 1 - 2]
+            bufObj.i += count - 2 # - 1 null terminator
+            self.str = str(cur_data, encoding = "utf-8")
+
+    class YtVisionSeedResultTypePoints:
+        def __init__ (self):
+            self.type = 'YtVisionSeedResultTypePoints'
+            self.points = []
+
+        def parse (self, bufObj, count):
+            for i in range(count // 4):
+                self.points.append(YtDataLink.AttributeDict({
+                    'x': YtDataLink.unpackInt16(bufObj),
+                    'y': YtDataLink.unpackInt16(bufObj),
+                }))
+
+    class YtVisionSeedModel:
+        FACE_DETECTION = 1
+        FACE_LANDMARK = 2
+        FACE_POSE = 3
+        FACE_QUALITY = 4
+        FACE_RECOGNITION = 6
+        DETECTION_TRACE = 8
+
+    class DataV2:
+        def __init__(self, buf):
+            # self.array = bytearray(0)
+            self.data = {}
+            bufObj = YtDataLink.AttributeDict({'p': buf, 'i': 0})
+            count = bufObj.p[bufObj.i]
+            bufObj.i += 1
+            for i in range(count):
+                cur_path_len = bufObj.p[bufObj.i]
+                bufObj.i += 1
+                cur_path = bufObj.p[bufObj.i : bufObj.i + cur_path_len]
+                bufObj.i += cur_path_len
+                type = bufObj.p[bufObj.i]
+                bufObj.i += 1
+                cur_data_len = YtDataLink.unpackVarUInt32(bufObj)
+
+                result = None
+                if (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_CLASSIFICATION and cur_data_len == 4):
+                    result = YtDataLink.YtVisionSeedResultTypeClassification()
+                elif (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_RECT and cur_data_len == 12):
+                    result = YtDataLink.YtVisionSeedResultTypeRect()
+                elif (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_ARRAY):
+                    result = YtDataLink.YtVisionSeedResultTypeArray()
+                elif (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_STRING):
+                    result = YtDataLink.YtVisionSeedResultTypeString()
+                elif (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_POINTS):
+                    result = YtDataLink.YtVisionSeedResultTypePoints()
+                elif (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_VARUINT32):
+                    result = YtDataLink.unpackVarUInt32(bufObj)
+
+                cur_path = ','.join([str(int.from_bytes(cur_path[x:x+1], byteorder='little', signed=False)) for x in range(len(cur_path))])
+                if not (result is None):
+                    if hasattr(result, 'parse'):
+                        result.parse(bufObj, cur_data_len)
+
+                    if (type == YtDataLink.YtVisionSeedResultType.YT_RESULT_POINTS and len(result.points) == 90):
+                        result.faceShape = YtFaceAlignment.YtFaceShape(result)
+
+                    self.data[cur_path] = result
+                else:
+                    cur_data = bufObj.p[bufObj.i : bufObj.i + cur_data_len]
+                    self.data[cur_path] = cur_data
+                    bufObj.i += cur_data_len
+            # // console.log('[result]', self.data)
+
+        def getResult(self, path):
+            path = ','.join(str(x) for x in path)
+            if path in self.data:
+                return self.data[path]
+            return None
+
     class YtDataLinkStatus:
         YT_DL_IDLE = 0
         YT_DL_LEN1_PENDING = 1
@@ -168,13 +312,16 @@ class YtDataLink:
                         self.mStatus = self.YtDataLinkStatus.YT_DL_IDLE
 
                         target = YtMsg()
+                        dataV2 = None
                         target.ParseFromString(self.mBuf)
-                        return target
+                        if target.result.HasField('dataV2'):
+                            dataV2 = YtDataLink.DataV2(target.result.dataV2)
+                        return dataV2, target
 
                     self.mStatus = self.mStatus + 1
                     continue
 
-        return None
+        return None, None
 
     def sendYtMsg (self, msg):
         data = msg.SerializeToString()
@@ -233,3 +380,32 @@ class YtDataLink:
 
         # self.printBuf(transedBuffer)
         self.port.write(transedBuffer)
+
+    # 结果包解析
+    def unpackInt16 (bufObj):
+        ret = 0
+        ret = bufObj.p[bufObj.i + 1]
+        ret <<= 8
+        ret |= bufObj.p[bufObj.i]
+        bufObj.i += 2
+        return ret
+
+    def unpackUInt16 (bufObj):
+        ret = 0
+        ret = bufObj.p[bufObj.i + 1]
+        ret <<= 8
+        ret |= bufObj.p[bufObj.i]
+        bufObj.i += 2
+        return ret
+
+    def unpackVarUInt32 (bufObj):
+        ret = 0
+        shift = 0
+        while (True):
+            byte = bufObj.p[bufObj.i]
+            bufObj.i += 1
+            ret |= (byte & 0x7f) << shift
+            if ((byte & 0x80) == 0):
+                break
+            shift += 7
+        return ret

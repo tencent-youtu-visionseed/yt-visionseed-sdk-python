@@ -17,7 +17,7 @@ class Point:
         return math.sqrt(self.x**2 + self.y**2)
 
 class YtFaceShape:
-    def __init__(self, pose):
+    def __init__(self, points):
         self.leftEyebrow = [None]*8
         self.rightEyebrow = [None]*8
         self.leftEye = [None]*8
@@ -28,26 +28,26 @@ class YtFaceShape:
         self.pupil = [None]*2
         idx = 0
         for i in range(len(self.leftEyebrow)):
-            self.leftEyebrow[i] = Point(pose.x[idx], pose.y[idx])
+            self.leftEyebrow[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.rightEyebrow)):
-            self.rightEyebrow[i] = Point(pose.x[idx], pose.y[idx])
+            self.rightEyebrow[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.leftEye)):
-            self.leftEye[i] = Point(pose.x[idx], pose.y[idx])
+            self.leftEye[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.rightEye)):
-            self.rightEye[i] = Point(pose.x[idx], pose.y[idx])
+            self.rightEye[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.nose)):
-            self.nose[i] = Point(pose.x[idx], pose.y[idx])
+            self.nose[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.mouth)):
-            self.mouth[i] = Point(pose.x[idx], pose.y[idx])
+            self.mouth[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.faceProfile)):
-            self.faceProfile[i] = Point(pose.x[idx], pose.y[idx])
+            self.faceProfile[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
         for i in range(len(self.pupil)):
-            self.pupil[i] = Point(pose.x[idx], pose.y[idx])
+            self.pupil[i] = Point(points.points[idx].x, points.points[idx].y)
             idx += 1
