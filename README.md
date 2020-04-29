@@ -6,7 +6,7 @@
 
 # install
 ```shell
-pip3 install visionseed
+pip3 install --upgrade visionseed
 ```
 
 # run example
