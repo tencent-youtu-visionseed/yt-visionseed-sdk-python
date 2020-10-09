@@ -9,8 +9,11 @@
 #     parser.on('data', console.log)
 #  */
 from .YtMsg_pb2 import *
+from .FilePart_pb2 import *
 from . import YtFaceAlignment
 import numpy as np
+import struct
+import time
 
 class YtDataLink:
     class YtVisionSeedResultType:
@@ -168,6 +171,7 @@ class YtDataLink:
     SOF = 0x10
     TRANS = 0x11
     ytMsgSize = 2097152
+    fileBlobSize = 131072
     ccittTable = [
         0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7,
         0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF,
@@ -213,6 +217,8 @@ class YtDataLink:
         self.mTrans = False
         self.mCrcSendCalc = 0xffff
         self.port = port
+        self.rpcId = 0
+        self.port.read(1)
 
     def crcUpdate (self, ch, first):
         if (first):
@@ -323,9 +329,91 @@ class YtDataLink:
 
         return None, None
 
+    def _sendFilePackage (self, remoteFile, totalLength, buf, offset, auth = ''):
+        rpc = YtRpc()
+        rpc.func = YtRpc.Function.uploadFile
+        rpc.auth = auth
+
+        params = FilePart()
+        params.path = (remoteFile)
+        params.totalLength = (totalLength)
+        params.offset = (offset)
+        params.data = (buf)
+        rpc.filePart.CopyFrom(params)
+        result = self.sendRpcMsg(rpc, 10000)
+        # print(result)
+        if (not result.HasField('response')):
+            raise Exception('未知错误')
+
+    def sendFile (self, localFile, remoteFile, auth = '', progressCb = None):
+        file = open(localFile, mode='rb')
+        data = file.read()
+        # print(len(data))
+
+        totalLength = len(data)
+        currentOffset = 0
+        remaining = totalLength
+        sizeToTransmit = 0
+        while (remaining > 0):
+            sizeToTransmit = self.fileBlobSize if remaining > self.fileBlobSize else remaining
+            buf = data[currentOffset : currentOffset + sizeToTransmit]
+            for i in range(100):
+                try:
+                    self._sendFilePackage(remoteFile, totalLength, buf, currentOffset, auth)
+                    break
+                except Exception as e:
+                    if (i > 10):
+                        raise e
+                    # console.log('[sendFile]', e, 'retry', i)
+            currentOffset += sizeToTransmit
+            remaining = totalLength - currentOffset
+            if not (progressCb is None):
+                progressCb(parseInt(Math.min(100 if remaining == 0 else 99, (currentOffset + sizeToTransmit) / totalLength * 100)))
+
+    def genRpcId (self):
+        self.rpcId += 1
+        return self.rpcId
+
+    def sendRpcMsg (self, rpc, timeoutMs = 10000):
+        rpcid = self.genRpcId()
+        rpc.sequenceId = rpcid
+
+        msg = YtMsg()
+        msg.rpc.CopyFrom(rpc)
+
+        self.sendYtMsg(msg)
+        ts = time.time()
+        while (time.time() - ts < timeoutMs/1000):
+            _, resp = self.recvRunOnce()
+            if (resp and resp.HasField('response')):
+                if (resp.response.sequenceId == rpcid):
+                    if (resp.response.code != YtRpcResponse.ReturnCode.SUCC and
+                        resp.response.code != YtRpcResponse.ReturnCode.CONTINUE):
+                        err = self.getErrMsg(resp.response.code)
+                        raise Exception(err)
+                    return resp
+        raise Exception('Timeout')
+
     def sendYtMsg (self, msg):
         data = msg.SerializeToString()
         self.write(data)
+
+    def getErrMsg (self, code):
+        errMsgs = {}
+        c = YtRpcResponse.ReturnCode
+        errMsgs[c.ERROR_REGISTER_FACEID_TIMEOUT] = '在指定时间内，没有检测到合格人脸'
+        errMsgs[c.ERROR_FILE_EXCEED_LIMITS] = '文件超过大小/尺寸限制'
+        errMsgs[c.ERROR_REGISTER_FACEID_NO_FACE_DETECTED] = '没有检测到人脸'
+        errMsgs[c.ERROR_REGISTER_FACEID_FACE_QUALITY_TOO_LOW] = '人脸侧偏过大'
+        errMsgs[c.ERROR_REGISTER_FACEID_TOO_MANY_FACES] = '人脸太多'
+        errMsgs[c.ERROR_REGISTER_FACEID_FILE_NOT_READABLE] = '无效文件'
+        errMsgs[c.ERROR_REGISTER_FACEID_LIB_FULL] = '库满了'
+        errMsgs[c.ERROR_FACEID_NOT_EXIST] = 'FaceID不存在'
+
+        if (code in errMsgs):
+            return errMsgs[code]
+        else:
+            return '未知错误(' + str(code) + ')'
 
     def crcSendUpdate (self, ch, first = False):
         if (first):
@@ -383,10 +471,14 @@ class YtDataLink:
 
     # 结果包解析
     def unpackInt16 (bufObj):
-        ret = 0
-        ret = bufObj.p[bufObj.i + 1]
-        ret <<= 8
-        ret |= bufObj.p[bufObj.i]
+        buf = bytearray(2)
+        buf[0] = bufObj.p[bufObj.i]
+        buf[1] = bufObj.p[bufObj.i + 1]
+        ret = struct.unpack("<h", buf)[0]
+        # ret = 0
+        # ret = bufObj.p[bufObj.i + 1]
+        # ret <<= 8
+        # ret |= bufObj.p[bufObj.i]
         bufObj.i += 2
         return ret
 

@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 # author: chenliang @ Youtu Lab, Tencent
-import visionseed as vs
+from visionseed import YtVisionSeed, YtDataLink
 import serial
 import matplotlib
 import matplotlib.pyplot as plt
 
 
-datalink = vs.YtDataLink( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
+vs = YtVisionSeed( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
 
 class Chart:
     def __init__(self, maxlen=100, title='', xlabel='frame', ylabel=''):
@@ -47,10 +47,10 @@ class Chart:
 def main():
     chart = Chart(100, 'mouth', 'frame', 'openess')
     while True:
-        result, msg = datalink.recvRunOnce()
+        result, msg = vs.recvRunOnce()
 
         if result:
-            YtVisionSeedModel = vs.YtDataLink.YtVisionSeedModel
+            YtVisionSeedModel = YtDataLink.YtVisionSeedModel
             count = result.getResult([YtVisionSeedModel.FACE_DETECTION])
             for i in range(count):
                 line = ''

@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="visionseed",
-    version="1.2.0",
+    version="1.2.1",
     description="python-sdk for VisionSeed - a camera module with AI ability",
     long_description=README,
     long_description_content_type="text/markdown",

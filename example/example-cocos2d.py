@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 # author: chenliang @ Youtu Lab, Tencent
-import visionseed as vs
+from visionseed import YtVisionSeed, YtDataLink
 import serial
 
 import cocos
@@ -16,7 +16,7 @@ from pyglet.gl import *
 
 import matplotlib
 
-datalink = vs.YtDataLink( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
+vs = YtVisionSeed( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
 
@@ -29,40 +29,15 @@ frame_height = int(cap.get(4))
 window_width = frame_width
 window_height = frame_height
 
-class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
+class VisionSeedLayer(cocos.layer.Layer): #实现一个layer类（图层）
     def __init__(self):
-        super(hello_visionseed, self).__init__()
+        super(VisionSeedLayer, self).__init__()
         self.skipSync = 0
         self.frame = None
         self.msg = None
         self.sprite = None
-        self.label = cocos.text.Label('O',font_name = 'Time New Noman',font_size = 32,anchor_x = "center",anchor_y = "center")
-        self.label.position = (window_width/2, window_height/2)
-        # self.add(self.label, z=100)
 
-        self.mouth = []
-        for i in range(2):
-            mouth = cocos.sprite.Sprite('mouth%d.png' % i)
-            mouth.position = (window_width/2, window_height/2)
-            self.add(mouth, z=200)
-            mouth.opacity = 0
-            self.mouth.append(mouth)
-
-        self.setDebugDrawing(1)
-
-        clock.schedule(self.callback)
-
-    def setFlasher(self, ir):
-        msg = vs.YtMsg()
-        msg.rpc.func = msg.rpc.setFlasher
-        msg.rpc.flasherParams.ir = ir
-        datalink.sendYtMsg(msg)
-
-    def setDebugDrawing(self, drawing):
-        msg = vs.YtMsg()
-        msg.rpc.func = msg.rpc.setDebugDrawing
-        msg.rpc.intParams = drawing
-        datalink.sendYtMsg(msg)
+        vs.setDebugDrawing(1)
 
     def drawImage(self, frame, drawRects):
         if (len(drawRects) == 0):
@@ -127,7 +102,7 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
 
     def recvMsg(self):
         while True:
-            result, msg = datalink.recvRunOnce()
+            result, msg = vs.recvRunOnce()
             if msg:
                 # print(msg)
                 if msg.result.HasField('frameId'):
@@ -181,13 +156,54 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
             print('miss =', self.frame['frameId'], self.msg['frameId'])
             return
 
+        self.on_frame(self.frame['frame'], self.msg['result'])
+
+        self.msg = None
+        self.frame = None
+
+    def on_enter( self ):
+        super(VisionSeedLayer,self).on_enter()
+        clock.schedule(self.callback)
+
+    def on_exit( self ):
+        super(VisionSeedLayer,self).on_exit()
+        clock.unschedule(self.callback)
+
+    def on_frame(self, frame, result):
+        pass
+
+
+class GameBegin(VisionSeedLayer): #实现一个layer类（图层）
+    def __init__(self):
+        super(GameBegin, self).__init__()
+
+        self.label = cocos.text.Label('O',font_name = 'Time New Noman',font_size = 32,anchor_x = "center",anchor_y = "center")
+        self.label.position = (window_width/2, window_height/2)
+        # self.add(self.label, z=100)
+
+        self.mouth = []
+        for i in range(2):
+            mouth = cocos.sprite.Sprite('mouth%d.png' % i)
+            mouth.position = (window_width/2, window_height/2)
+            self.add(mouth, z=200)
+            mouth.opacity = 0
+            self.mouth.append(mouth)
+
+    def on_enter( self ):
+        super(GameBegin,self).on_enter()
+        self.cnt = 0
+
+    def on_frame(self, frame, result):
+        #清除上一帧的avatar
+        if self.sprite:
+            self.remove(self.sprite)
+            self.sprite = None
+
         # print(''.join('{:02x} '.format(x) for x in buf))
-        result = self.msg['result']
-        frame = self.frame['frame']
 
         drawRects = []
 
-        YtVisionSeedModel = vs.YtDataLink.YtVisionSeedModel
+        YtVisionSeedModel = YtDataLink.YtVisionSeedModel
         count = result.getResult([YtVisionSeedModel.FACE_DETECTION])
         # 打印信息
         for i in range(count):
@@ -263,12 +279,10 @@ class hello_visionseed(cocos.layer.Layer): #实现一个layer类（图层）
 
         self.drawImage(frame, drawRects)
 
-        self.msg = None
-        self.frame = None
 
 if __name__ == '__main__':
     director.director.init(width=window_width, height=window_height) #初始化导演类，一个应用程序只有一个导演类（全局）
     # director.director.set_show_FPS(True)
-    hello_layer = hello_visionseed() #实例化一个图层
+    hello_layer = GameBegin() #实例化一个图层
     main_scene = cocos.scene.Scene(hello_layer) #初始化一个场景，并将图层加入到场景中
     cocos.director.director.run(main_scene) #用导演类来运行第一个场景

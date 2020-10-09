@@ -1,18 +1,18 @@
 # -*- coding:utf-8 -*-
 # author: chenliang @ Youtu Lab, Tencent
-import visionseed as vs
+from visionseed import YtVisionSeed, YtDataLink
 import serial
 import time
 
 
-datalink = vs.YtDataLink( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
+vs = YtVisionSeed( serial.Serial("/dev/ttyACM0",115200,timeout=0.5) )
 
 def main():
     while True:
-        result, msg = datalink.recvRunOnce()
+        result, msg = vs.recvRunOnce()
 
         if result:
-            YtVisionSeedModel = vs.YtDataLink.YtVisionSeedModel
+            YtVisionSeedModel = YtDataLink.YtVisionSeedModel
             count = result.getResult([YtVisionSeedModel.FACE_DETECTION])
             for i in range(count):
                 line = ''
